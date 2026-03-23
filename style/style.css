@@ -34,7 +34,9 @@ body {
 /* =========================================================================
    Typography & Utilities
    ========================================================================= */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-weight: 800;
     line-height: 1.2;
 }
@@ -165,6 +167,25 @@ h1, h2, h3 {
     margin-bottom: 20px;
     font-weight: 400;
     transition: all 0.6s ease;
+    min-height: 40px;
+}
+
+#typewriter {
+    border-right: 3px solid var(--accent);
+    padding-right: 5px;
+    animation: blinkCaret 0.8s step-end infinite;
+}
+
+@keyframes blinkCaret {
+
+    from,
+    to {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: var(--accent);
+    }
 }
 
 .hero-content p {
@@ -261,10 +282,13 @@ h1, h2, h3 {
 .flip-card-front::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background:
-        radial-gradient(circle at 35% 35%, rgba(255,255,255,0.3), transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.1), rgba(0,0,0,0.2));
+        radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.3), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.1), rgba(0, 0, 0, 0.2));
     pointer-events: none;
     z-index: 2;
 }
@@ -288,20 +312,73 @@ h1, h2, h3 {
     opacity: 1;
 }
 
+.tilt-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    cursor: pointer;
+    perspective: 1200px;
+    position: relative;
+}
+
+/* Background glowing circle behind the picture */
+.tilt-box::before {
+    content: '';
+    position: absolute;
+    width: 380px;
+    /* Make the circle bigger */
+    height: 380px;
+    /* Make the circle bigger */
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, rgba(129, 140, 248, 0.1) 60%, transparent 100%);
+    box-shadow: 0 0 50px rgba(56, 189, 248, 0.2);
+    border: 2px dashed rgba(56, 189, 248, 0.5);
+    z-index: 1;
+    /* Keeps the circle under the picture */
+    transform: translateZ(-20px);
+    transition: all 0.6s ease-out;
+    animation: rotateCircle 25s linear infinite;
+}
+
+@keyframes rotateCircle {
+    from {
+        transform: translateZ(-20px) rotate(0deg);
+    }
+
+    to {
+        transform: translateZ(-20px) rotate(360deg);
+    }
+}
+
+.tilt-box:hover::before {
+    box-shadow: 0 0 80px rgba(56, 189, 248, 0.5);
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.3) 0%, rgba(129, 140, 248, 0.15) 60%, transparent 100%);
+}
+
 .profile-pic {
-    width: 100%;
-    height: 100%;
+    width: 320px;
+    /* Also increased the picture size to match */
+    height: 320px;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 50%;
+    /* Remove this line if mypic.png is a transparent cutout! */
+    border: 4px solid var(--accent);
+    /* Remove this line if mypic.png is a transparent cutout! */
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     filter: brightness(1.05) contrast(1.1);
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(56, 189, 248, 0.2);
+    position: relative;
+    z-index: 3;
+    /* Keeps picture on top of circle */
+    transform-style: preserve-3d;
+    transform: perspective(1200px) rotateX(0deg) rotateY(0deg) translateZ(0);
 }
 
-.flip-container:hover .profile-pic {
-    transform: scale(1.1) translateZ(30px);
-}
-
-.flip-container.flipped .profile-pic {
-    transform: scale(1.1) translateZ(30px);
+.tilt-box:hover .profile-pic {
+    border-color: #fff;
 }
 
 /* Back Card Content */
@@ -316,6 +393,14 @@ h1, h2, h3 {
     justify-content: center;
     position: relative;
     z-index: 3;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.flip-container:hover .back-content {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .back-content h3 {
@@ -323,12 +408,14 @@ h1, h2, h3 {
     color: var(--accent);
     margin-bottom: 10px;
     font-weight: 800;
+    animation: textGlow 2s ease-in-out infinite alternate;
 }
 
 .back-content p {
     color: var(--text-secondary);
     font-size: 0.95rem;
     margin-bottom: 20px;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
 .tech-stack {
@@ -351,17 +438,55 @@ h1, h2, h3 {
     font-weight: 600;
     border: 1px solid var(--accent);
     animation: popUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    transition: all 0.3s ease;
 }
 
-.tech:nth-child(1) { animation-delay: 0.1s; }
-.tech:nth-child(2) { animation-delay: 0.2s; }
-.tech:nth-child(3) { animation-delay: 0.3s; }
+.tech:hover {
+    background: var(--accent);
+    color: white;
+    transform: scale(1.1);
+}
+
+.tech:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.tech:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.tech:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes textGlow {
+    from {
+        text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+
+    to {
+        text-shadow: 0 0 20px rgba(56, 189, 248, 0.8), 0 0 30px rgba(56, 189, 248, 0.6);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 @keyframes popUp {
     from {
         opacity: 0;
         transform: scale(0.5) translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -417,10 +542,11 @@ h1, h2, h3 {
 /* The UP ARROW marker */
 .timeline-item .arrow.up {
     position: absolute;
-    left: -58px; /* centering the arrow on the line */
+    left: -58px;
+    /* centering the arrow on the line */
     top: 5px;
-    width: 0; 
-    height: 0; 
+    width: 0;
+    height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 14px solid var(--accent);
@@ -567,9 +693,20 @@ h1, h2, h3 {
     width: fit-content;
 }
 
-.badge.team { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
-.badge.self { background: rgba(167, 139, 250, 0.2); color: #a78bfa; }
-.badge.college { background: rgba(52, 211, 153, 0.2); color: #34d399; }
+.badge.team {
+    background: rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+}
+
+.badge.self {
+    background: rgba(167, 139, 250, 0.2);
+    color: #a78bfa;
+}
+
+.badge.college {
+    background: rgba(52, 211, 153, 0.2);
+    color: #34d399;
+}
 
 .project-card p {
     color: var(--text-secondary);
@@ -630,6 +767,7 @@ h1, h2, h3 {
     transform: translateY(40px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
+
 .fade-up.visible {
     opacity: 1;
     transform: translateY(0);
@@ -640,6 +778,7 @@ h1, h2, h3 {
     transform: translateX(40px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
+
 .fade-left.visible {
     opacity: 1;
     transform: translateX(0);
@@ -650,6 +789,7 @@ h1, h2, h3 {
     transform: translateX(-40px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
+
 .fade-right.visible {
     opacity: 1;
     transform: translateX(0);
@@ -664,27 +804,29 @@ h1, h2, h3 {
         text-align: center;
         padding-top: 150px;
     }
-    
+
     .hero-buttons {
         justify-content: center;
         margin-bottom: 50px;
     }
-    
+
     .hero-content h1 {
         font-size: 3rem;
     }
-    
+
     .timeline {
         padding-left: 25px;
     }
+
     .timeline-item .arrow.up {
         left: -33px;
     }
-    
+
     .nav-links {
-        display: none; /* simple mobile behavior */
+        display: none;
+        /* simple mobile behavior */
     }
-    
+
     .navbar {
         justify-content: center;
     }

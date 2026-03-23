@@ -23,23 +23,60 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* =========================================================================
-       2. 3D Card Flip Animation
+       2. Typewriter Effect for Hero Subtitle
        ========================================================================= */
-    const flipContainer = document.getElementById('tilt-image');
-    if (flipContainer) {
-        flipContainer.addEventListener('click', () => {
-            flipContainer.classList.toggle('flipped');
+    const typewriterElement = document.getElementById('typewriter');
+    if (typewriterElement) {
+        const textToType = typewriterElement.innerText || "Software Engineering & BIT Student";
+        typewriterElement.innerHTML = '';
+        let charIndex = 0;
+
+        function typeText() {
+            if (charIndex < textToType.length) {
+                typewriterElement.innerHTML += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeText, 70); // typing speed
+            }
+        }
+        
+        // Slight delay to sync with CSS fade-in
+        setTimeout(typeText, 800);
+    }
+
+    /* =========================================================================
+       3. Dynamic 3D Hover & Tilt Effect
+       ========================================================================= */
+    const tiltBox = document.getElementById('tilt-image');
+    if (tiltBox) {
+        const pic = tiltBox.querySelector('.profile-pic');
+        
+        tiltBox.addEventListener('mousemove', (e) => {
+            const rect = tiltBox.getBoundingClientRect();
+            const x = e.clientX - rect.left; 
+            const y = e.clientY - rect.top;  
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Adjust sensitivity
+            const rotateX = ((y - centerY) / centerY) * -20; 
+            const rotateY = ((x - centerX) / centerX) * 20;
+            
+            pic.style.transition = 'transform 0.1s ease-out, box-shadow 0.1s ease-out';
+            pic.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05) translateZ(30px)`;
+            
+            // Dynamic shadow effect based on tilt
+            pic.style.boxShadow = `
+                ${-rotateY * 0.8}px ${rotateX * 0.8 + 25}px 45px rgba(0,0,0,0.5), 
+                0 0 50px rgba(56,189,248,0.6),
+                inset 0 0 25px rgba(255, 255, 255, 0.3)
+            `;
         });
-
-        // Optional: Auto flip back after 5 seconds
-        flipContainer.addEventListener('click', function handleFlip() {
-            const timeout = setTimeout(() => {
-                flipContainer.classList.remove('flipped');
-            }, 5000);
-
-            // Clear previous timeout if user clicks again
-            if (this.flipTimeout) clearTimeout(this.flipTimeout);
-            this.flipTimeout = timeout;
+        
+        tiltBox.addEventListener('mouseleave', () => {
+            pic.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)';
+            pic.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1) translateZ(0)';
+            pic.style.boxShadow = ''; // Reverts to CSS default
         });
     }
 
