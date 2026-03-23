@@ -23,35 +23,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* =========================================================================
-       2. 3D Tilt Hover Effect Logic
+       2. 3D Tilt Hover Effect Logic with Smooth Animations
        ========================================================================= */
     const tiltBox = document.getElementById('tilt-image');
     if (tiltBox) {
+        let currentRotateX = 0;
+        let currentRotateY = 0;
+        let targetRotateX = 0;
+        let targetRotateY = 0;
+        let isMouseOver = false;
+
+        const smoothTilt = () => {
+            // Smooth lerp towards target rotation
+            currentRotateX += (targetRotateX - currentRotateX) * 0.1;
+            currentRotateY += (targetRotateY - currentRotateY) * 0.1;
+
+            tiltBox.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+            
+            if (isMouseOver || Math.abs(targetRotateX) > 0.1 || Math.abs(targetRotateY) > 0.1) {
+                requestAnimationFrame(smoothTilt);
+            }
+        };
+
         tiltBox.addEventListener('mousemove', (e) => {
+            if (!isMouseOver) return;
+
             const rect = tiltBox.getBoundingClientRect();
-            // Calculate mouse position relative to the center of the element
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
-            // The further the mouse is from the center, the higher the rotation (max 15deg)
-            const rotateX = ((y - centerY) / centerY) * -15; 
-            const rotateY = ((x - centerX) / centerX) * 15;
+            // Calculate target rotations (max 20deg for more pronounced effect)
+            targetRotateX = ((y - centerY) / centerY) * -20; 
+            targetRotateY = ((x - centerX) / centerX) * 20;
 
-            tiltBox.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            tiltBox.style.transition = 'none';
+            smoothTilt();
         });
 
-        // Reset transform on mouse leave
-        tiltBox.addEventListener('mouseleave', () => {
-            tiltBox.style.transform = `rotateX(0deg) rotateY(0deg)`;
-            tiltBox.style.transition = `transform 0.5s ease-out`; // smooth return back
-        });
-
-        // Remove the transition while moving so it doesn't drag/lag
         tiltBox.addEventListener('mouseenter', () => {
-            tiltBox.style.transition = `transform 0.1s ease-out`;
+            isMouseOver = true;
+            tiltBox.style.transition = 'none';
+        });
+
+        // Reset transform on mouse leave with smooth animation
+        tiltBox.addEventListener('mouseleave', () => {
+            isMouseOver = false;
+            tiltBox.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            targetRotateX = 0;
+            targetRotateY = 0;
+            tiltBox.style.transform = 'rotateX(0deg) rotateY(0deg)';
         });
     }
 
