@@ -23,10 +23,17 @@
       <ul class="nav-links">
         <li><a href="#hero">Home</a></li>
         <li><a href="#about">About Me</a></li>
+        <li><a href="#documents">Documents</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <div class="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
     </nav>
+    <div class="mobile-menu-overlay"></div>
 
     <header id="hero" class="hero">
       <div class="hero-image-wrapper fade-left">
@@ -60,6 +67,15 @@
             highly motivated to explore complex problems and create robust web
             applications.
           </p>
+          <blockquote class="quote">
+            "Everybody is a genius. But if you judge a fish by its ability to
+            climb a tree, it will live its whole life believing that it is
+            stupid." - Albert Einstein
+          </blockquote>
+          <blockquote class="quote">
+            "What I believe is that fish can climb trees, but under the
+            condition that the tree is inside the water." - Sujit Bastola
+          </blockquote>
         </div>
 
         <div class="timeline fade-left">
@@ -101,6 +117,42 @@
                 >Visit Website</a
               >
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="documents" class="documents">
+      <div class="section-title fade-up">
+        <h2>Documents <span class="highlight">& Downloads</span></h2>
+      </div>
+      <div class="documents-content">
+        <div class="document-card glassmorphism fade-up">
+          <h3>CV / Resume</h3>
+          <p>
+            Download my professional CV to learn more about my experience and
+            qualifications.
+          </p>
+          <div class="document-buttons">
+            <a href="CV.pdf" target="_blank" class="btn secondary">View CV</a>
+            <a href="CV.pdf" download class="btn primary">Download CV</a>
+          </div>
+        </div>
+        <div
+          class="document-card glassmorphism fade-up"
+          style="transition-delay: 100ms"
+        >
+          <h3>Cover Letter</h3>
+          <p>
+            Read my cover letter to understand my motivation and career goals.
+          </p>
+          <div class="document-buttons">
+            <a href="Cover_Letter.pdf" target="_blank" class="btn secondary"
+              >View Cover Letter</a
+            >
+            <a href="Cover_Letter.pdf" download class="btn primary"
+              >Download Cover Letter</a
+            >
           </div>
         </div>
       </div>
@@ -165,24 +217,55 @@
 
     <footer id="contact" class="footer glassmorphism fade-up">
       <h2>Let's <span class="highlight">Talk</span></h2>
-      <div class="contact-links">
-        <a href="mailto:sujitbastola@gmail.com" class="contact-item">
-          <span class="icon">✉️</span> sujitbastola@gmail.com
-        </a>
-        <a
-          href="https://wa.me/9779745450737"
-          target="_blank"
-          class="contact-item"
-        >
-          <span class="icon">📱</span> +977 9745450737
-        </a>
-        <a
-          href="mailto:sujitbastola@gmail.com"
-          class="contact-item"
-          title="LinkedIn requested URL via email format"
-        >
-          <span class="icon">🔗</span> LinkedIn
-        </a>
+      <div class="contact-layout">
+        <form class="contact-form">
+          <div class="form-row">
+            <div class="input-container">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" placeholder="John Doe" required />
+            </div>
+            <div class="input-container">
+              <label for="email">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="john@example.com"
+                required
+              />
+            </div>
+          </div>
+          <div class="input-container">
+            <label for="message">Your Message</label>
+            <textarea
+              id="message"
+              rows="5"
+              placeholder="How can I help you?"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn primary submit-btn">
+            Send Message <span class="icon">🚀</span>
+          </button>
+        </form>
+        <div class="contact-links">
+          <a href="mailto:sujitbastola@gmail.com" class="contact-item">
+            <span class="icon">✉️</span> sujitbastola@gmail.com
+          </a>
+          <a
+            href="https://wa.me/9779745450737"
+            target="_blank"
+            class="contact-item"
+          >
+            <span class="icon">📱</span> +977 9745450737
+          </a>
+          <a
+            href="mailto:sujitbastola@gmail.com"
+            class="contact-item"
+            title="LinkedIn requested URL via email format"
+          >
+            <span class="icon">🔗</span> LinkedIn
+          </a>
+        </div>
       </div>
       <p class="copyright">© 2026 Sujit Bastola. All rights reserved.</p>
     </footer>
